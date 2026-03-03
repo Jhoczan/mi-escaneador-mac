@@ -1,28 +1,32 @@
 name: Crear App para Mac
-on: [push] # Se activa cada vez que subes algo
+on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: macos-latest # ¡Aquí pedimos la Mac virtual!
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Instalar Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Instalar Librerias
-      run: |
-        pip install python-docx psutil pyinstaller
-        
-    - name: Construir Ejecutable
-      run: |
-        # Esto crea el archivo de Mac
-        pyinstaller --onefile --windowed --name "Escaneo_Mac" reporte_pc.py
-        
-    - name: Guardar Resultado
-      uses: actions/upload-artifact@v4
-      with:
-        name: App-Mac-Lista
-        path: dist/Escaneo_Mac.app
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Listar archivos para verificar (Debug)
+        run: ls -R
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar Librerias
+        run: |
+          pip install python-docx psutil pyinstaller
+
+      - name: Construir App de Mac
+        run: |
+          # Si tu archivo tiene otro nombre, cámbialo aquí abajo:
+          pyinstaller --onefile --windowed --name "Escaneo_Mac" --noconfirm reporte_pc.py
+
+      - name: Guardar y Generar Descarga
+        uses: actions/upload-artifact@v4
+        with:
+          name: App-Mac-Lista
+          path: dist/Escaneo_Mac.app
