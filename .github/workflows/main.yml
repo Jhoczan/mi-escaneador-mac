@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: macos-latest # ¡Aquí pedimos la Mac virtual!
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Instalar Python
       uses: actions/setup-python@v4
@@ -22,7 +22,7 @@ jobs:
         pyinstaller --onefile --windowed --name "Escaneo_Mac" reporte_pc.py
         
     - name: Guardar Resultado
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: App-Mac-Lista
         path: dist/Escaneo_Mac.app
